@@ -8,7 +8,7 @@ export function AppSrc() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Groups />
-      <StatusBar style="auto" />
+      <StatusBar style="light" translucent backgroundColor="transparent" />
     </GestureHandlerRootView>
   )
 }

@@ -7,7 +7,7 @@ export function Groups() {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '',
+        backgroundColor: '#121214',
       }}
     >
       <Text style={{ color: 'white' }}>Groups</Text>

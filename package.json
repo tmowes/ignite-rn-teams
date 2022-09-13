@@ -2,6 +2,7 @@
   "name": "ignite-rn-teams",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "private": true,
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -50,6 +51,5 @@
     "prettier": "^2.7.1",
     "react-native-svg-transformer": "^1.0.0",
     "typescript": "^4.8.3"
-  },
-  "private": true
+  }
 }
