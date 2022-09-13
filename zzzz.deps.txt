@@ -1,0 +1,5 @@
+  "dependencies": {
+    npx expo install @react-navigation/native @react-navigation/native-stack axios date-fns intl native-base phosphor-react-native react-native-gesture-handler react-native-reanimated react-native-safe-area-context react-native-screens react-native-svg
+  },
+  "devDependencies": {
+yad @babel/core @babel/preset-env @react-native-community/eslint-config @types/react @types/react-native @typescript-eslint/eslint-plugin @typescript-eslint/parser babel-plugin-module-resolver eslint eslint-config-airbnb eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-import-helpers eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-sonarjs prettier react-native-svg-transformer typescript
