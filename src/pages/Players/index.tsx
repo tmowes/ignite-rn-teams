@@ -1,7 +1,8 @@
-import { FlatList } from 'react-native'
-import { useState } from 'react'
+/* eslint-disable sonarjs/no-duplicate-string */
+import { Alert, FlatList, TextInput } from 'react-native'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { ButtonIcon } from '@components/ButtonIcon'
 import { CustomInput } from '@components/CustomInput'
@@ -11,100 +12,114 @@ import { TeamFilter } from '@components/TeamFilter'
 import { PlayerCard } from '@components/PlayerCard'
 import { EmptyListMessage } from '@components/EmptyListMessage'
 import { CustomButton } from '@components/CustomButton'
+import { createPlayerByGroup } from '@services/storage/player/add-player-by-group'
+import { AppError } from '@utils/AppError'
+import { PlayerDTO } from '@services/storage/player/PlayerDTO'
+import { getPlayersByTeamAndByGroup } from '@services/storage/player/get-players-by-team-and-by-group'
+import { removePlayerByGroup } from '@services/storage/player/remove-player-by-group'
+import { removeGroup } from '@services/storage/groups/remove-group'
 
 import * as S from './styles'
 
-const initialPlayers = [
-  'Julius',
-  'outro julius',
-  'mais um julius',
-  'julius 4',
-  'julius 5',
-  'julius 6',
-  'julius 7',
-  'julius 8',
-  'julius 9',
-  'julius 10',
-  'julius 11',
-  'julius 12',
-  'julius 13',
-  'julius 14',
-  'julius 15',
-  'julius 16',
-  'julius 17',
-  'julius 18',
-  'julius 19',
-  'julius 20',
-  'julius 21',
-  'julius 22',
-  'julius 23',
-  'julius 24',
-  'julius 25',
-  'julius 26',
-  'julius 27',
-  'julius 28',
-  'julius 29',
-  'julius 30',
-  'julius 31',
-  'julius 32',
-  'julius 33',
-  'julius 34',
-  'julius 35',
-  'julius 36',
-  'julius 37',
-  'julius 38',
-  'julius 39',
-  'julius 40',
-  'julius 41',
-  'julius 42',
-  'julius 43',
-  'julius 44',
-  'julius 45',
-  'julius 46',
-  'julius 47',
-  'julius 48',
-  'julius 49',
-  'julius 50',
-  'julius 51',
-  'julius 52',
-  'julius 53',
-  'julius 54',
-  'julius 55',
-  'julius 56',
-  'julius 57',
-  'julius 58',
-  'julius 59',
-  'julius 60',
-  'julius 61',
-  'julius 62',
-  'julius 63',
-  'julius 64',
-  'julius 65',
-  'julius 66',
-  'julius 67',
-  'julius 68',
-  'julius 69',
-  'julius 70',
-  'julius 71',
-  'julius 72',
-  'julius 73',
-  'ultimo julius',
-]
-
 export function Players() {
+  const { navigate } = useNavigation()
   const { params } = useRoute()
   const { id } = params as { id: string }
+  const inputRef = useRef<TextInput>(null)
+  const [playerName, setPlayerName] = useState('')
 
   const [activeTeam, setActiveTeam] = useState('TIME A')
-  const [players, setPlayers] = useState<string[]>(initialPlayers)
+  const [players, setPlayers] = useState<PlayerDTO[]>([])
+
+  const onAddPlayer = async () => {
+    if (!playerName.trim()) {
+      Alert.alert('Novo jogador', 'Informe o nome da jogador.')
+      return
+    }
+    try {
+      await createPlayerByGroup({ name: playerName, team: activeTeam }, id)
+      loadPlayersByTeam()
+      inputRef.current?.blur()
+      setPlayerName('')
+    } catch (error) {
+      if (error instanceof AppError) {
+        Alert.alert('Novo jogador', error.message)
+      } else {
+        Alert.alert('Novo jogador', 'Não foi possível adicionar o jogador.')
+        console.log(error)
+      }
+    }
+  }
+
+  const loadPlayersByTeam = useCallback(async () => {
+    try {
+      const data = await getPlayersByTeamAndByGroup(activeTeam, id)
+      setPlayers(data)
+    } catch (error) {
+      console.log(error)
+      Alert.alert('Erro', 'Não foi possível carregar os jogadores do time selecionado.')
+    }
+  }, [activeTeam, id])
+
+  const onRemovePlayer = useCallback(
+    async (playerId: string) => {
+      try {
+        await removePlayerByGroup(playerId, id)
+        await loadPlayersByTeam()
+      } catch (error) {
+        Alert.alert('Remover jogador', 'Não foi possível remover o jogador.')
+        console.log(error)
+      }
+    },
+    [id, loadPlayersByTeam],
+  )
+
+  const onRemoveGroup = useCallback(async () => {
+    try {
+      await removeGroup(id)
+      navigate('groups')
+    } catch (error) {
+      Alert.alert('Remover grupo', 'Não foi possível remover o grupo.')
+    }
+  }, [id, navigate])
+
+  const confirmRemoveGroup = useCallback(() => {
+    Alert.alert('Remover grupo', 'Deseja realmente remover o grupo?', [
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim',
+        onPress: () => onRemoveGroup(),
+      },
+    ])
+  }, [onRemoveGroup])
+
+  useEffect(() => {
+    loadPlayersByTeam()
+  }, [loadPlayersByTeam])
+
   return (
     <S.Container>
       <Header showBackButton />
       <Highlight title={id} subtitle="adicione a galera e separe os times" />
 
       <S.Form>
-        <CustomInput placeholder="Nome do participante" autoCorrect={false} />
-        <ButtonIcon icon="add" />
+        <CustomInput
+          inputRef={inputRef}
+          placeholder="Nome do participante"
+          autoCorrect={false}
+          value={playerName}
+          onChangeText={setPlayerName}
+          onSubmitEditing={onAddPlayer}
+          returnKeyType="done"
+        />
+        <ButtonIcon
+          icon="add"
+          onPress={onAddPlayer}
+          disabled={playerName.trim().length < 3}
+        />
       </S.Form>
       <S.HeaderPlayersList>
         <FlatList
@@ -129,11 +144,19 @@ export function Players() {
           { paddingBottom: 100 },
           players.length === 0 && { flex: 1 },
         ]}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <PlayerCard label={item} onRemove={() => true} />}
-        ListEmptyComponent={<EmptyListMessage message="Que tal cadastrar um jogador?" />}
+        keyExtractor={({ name }) => name}
+        renderItem={({ item: { name } }) => (
+          <PlayerCard label={name} onRemove={() => onRemovePlayer(name)} />
+        )}
+        ListEmptyComponent={
+          <EmptyListMessage message="Que tal cadastrar um jogador nesse time?" />
+        }
       />
-      <CustomButton variant="SECONDARY" label="Remover turma" />
+      <CustomButton
+        variant="SECONDARY"
+        label="Remover turma"
+        onPress={confirmRemoveGroup}
+      />
     </S.Container>
   )
 }
