@@ -4,11 +4,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { ThemeProvider } from 'styled-components/native'
 import { useFonts, Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto'
 
-import { Groups } from '@pages/Groups'
 import { theme } from '@styles/theme'
 import { Loading } from '@components/Loading'
-import { CreateGroup } from '@pages/CreateGroup'
-import { Players } from '@pages/Players'
+
+import { Routes } from './routes'
 
 export function AppSrc() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +18,7 @@ export function AppSrc() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider theme={theme}>
-        {fontsLoaded ? <Players /> : <Loading />}
+        {fontsLoaded ? <Routes /> : <Loading />}
         <StatusBar style="light" backgroundColor="transparent" translucent />
       </ThemeProvider>
     </GestureHandlerRootView>

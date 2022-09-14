@@ -1,6 +1,8 @@
 import { FlatList } from 'react-native'
 import { useState } from 'react'
 
+import { useRoute } from '@react-navigation/native'
+
 import { ButtonIcon } from '@components/ButtonIcon'
 import { CustomInput } from '@components/CustomInput'
 import { Header } from '@components/Header'
@@ -90,12 +92,14 @@ const initialPlayers = [
 ]
 
 export function Players() {
+  const { params } = useRoute()
+  const { id } = params as { id: string }
   const [activeTeam, setActiveTeam] = useState('TIME A')
   const [players, setPlayers] = useState<string[]>(initialPlayers)
   return (
     <S.Container>
       <Header showBackButton />
-      <Highlight title="Nome da turma" subtitle="adicione a galera e separe os times" />
+      <Highlight title={id} subtitle="adicione a galera e separe os times" />
 
       <S.Form>
         <CustomInput placeholder="Nome do participante" autoCorrect={false} />
