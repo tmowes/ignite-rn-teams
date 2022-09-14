@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components/native'
 import { ContainerProps } from './types'
 
 export const Container = styled.TouchableOpacity<ContainerProps>`
-  ${({ theme: { COLORS }, variant }) => css`
+  ${({ theme: { COLORS }, variant, disabled }) => css`
     flex: 1;
     min-height: 56px;
     max-height: 56px;
@@ -18,9 +18,16 @@ export const Container = styled.TouchableOpacity<ContainerProps>`
     css`
       background-color: ${COLORS.GREEN_700};
     `}
+
     ${variant === 'SECONDARY' &&
     css`
       background-color: ${COLORS.RED_DARK};
+    `}
+
+    ${disabled &&
+    css`
+      background-color: ${COLORS.GRAY_400};
+      opacity: 0.5;
     `}
   `}
 `

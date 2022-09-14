@@ -94,6 +94,7 @@ const initialPlayers = [
 export function Players() {
   const { params } = useRoute()
   const { id } = params as { id: string }
+
   const [activeTeam, setActiveTeam] = useState('TIME A')
   const [players, setPlayers] = useState<string[]>(initialPlayers)
   return (

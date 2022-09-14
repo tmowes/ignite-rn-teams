@@ -16,7 +16,7 @@ export function AppSrc() {
   })
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#121214' }}>
       <ThemeProvider theme={theme}>
         {fontsLoaded ? <Routes /> : <Loading />}
         <StatusBar style="light" backgroundColor="transparent" translucent />

@@ -9,4 +9,5 @@ export type ButtonVariantProps = 'PRIMARY' | 'SECONDARY'
 
 export type ContainerProps = {
   variant?: ButtonVariantProps
+  disabled?: boolean
 }
