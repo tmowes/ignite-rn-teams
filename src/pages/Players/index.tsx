@@ -104,6 +104,8 @@ export function Players() {
       <S.HeaderPlayersList>
         <FlatList
           data={['TIME A', 'TIME B']}
+          horizontal
+          showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <TeamFilter
@@ -112,7 +114,6 @@ export function Players() {
               onPress={() => setActiveTeam(item)}
             />
           )}
-          horizontal
         />
         <S.NumberOfPlayers>{players.length}</S.NumberOfPlayers>
       </S.HeaderPlayersList>

@@ -8,10 +8,3 @@ export const Container = styled(SafeAreaView)`
     padding: 24px;
   `}
 `
-
-export const Title = styled.Text`
-  ${({ theme: { COLORS, FONT } }) => css`
-    color: ${COLORS.WHITE};
-    font-family: ${FONT.BOLD};
-  `}
-`

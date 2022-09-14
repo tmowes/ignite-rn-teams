@@ -19,6 +19,7 @@ export function Groups() {
       <Highlight title="Turmas" subtitle="jogue com a sua turma" />
       <FlatList
         data={groups}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => String(item)}
         renderItem={({ item }) => <GroupCard label={item} />}
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
