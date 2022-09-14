@@ -1,3 +1,4 @@
+import logoImg from '../../assets/logo.png'
 import * as S from './styles'
 import { HeaderProps } from './types'
 
@@ -10,7 +11,7 @@ export function Header(props: HeaderProps) {
           <S.BackIcon />
         </S.BackButton>
       )}
-      <S.Logo source={{ uri: 'https://github.com/tmowes.png' }} />
+      <S.Logo source={logoImg} />
     </S.Container>
   )
 }

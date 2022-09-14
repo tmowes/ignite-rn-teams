@@ -10,8 +10,10 @@ export const Container = styled(SafeAreaView)`
 `
 
 export const Title = styled.Text`
-  ${({ theme: { COLORS, FONT } }) => css`
+  ${({ theme: { COLORS, FONT, SIZE } }) => css`
+    text-align: center;
     color: ${COLORS.WHITE};
-    font-family: ${FONT.BOLD};
+    font-size: ${SIZE.MD};
+    font-family: ${FONT.REGULAR};
   `}
 `
